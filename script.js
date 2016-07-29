@@ -3,16 +3,8 @@ window.addEventListener("load", function(){
   var getAPI = new XMLHttpRequest();
 
   getAPI.addEventListener("load", function(e){
-        
-      //creates JSON object without decimals
-      var cleansedData = JSON.parse(e.target.response, function(k,v) {
-      	if (typeof v === 'number') {
-      		return parseInt(v);
-      	}
-      	return v;
-      });
 
-      //creates JSON object with decimals
+      //creates JSON object
       var rawData = JSON.parse(e.target.response)
 
       // converts full time
@@ -68,7 +60,7 @@ window.addEventListener("load", function(){
         var dayName = weekday[d.getDay()];
         return dayName;
       } 
-
+      // formats precipitation
       function precipInt(num) {
         var precipIntensity = "--";
         var x = num.toFixed(1);
@@ -77,7 +69,7 @@ window.addEventListener("load", function(){
         }
         return precipIntensity;
       }
-      
+      //calculates wind direction from Blair
       function currentWindDirection(x) {
         if ((x >= 337.6 && x < 360) || (x >= 0 && x <= 22.5)) {"E";}
         else if (x >= 22.6 && x <= 67.5) {return "NE";}
@@ -90,8 +82,7 @@ window.addEventListener("load", function(){
         else {return "--";}
       };
 
-    //*****currently section ***** completes currently data *****
-      // completes currently data not involving floats or manipulation
+    //*****currently section ***** 
         var currently = rawData.currently;
 
         var currently_today = document.getElementById("today");  
@@ -114,7 +105,6 @@ window.addEventListener("load", function(){
         var currently_windSpeed = document.getElementById("windSpeed");
         currently_windSpeed.innerHTML = currently.windSpeed;
 
-      //need manipulation; use data from rawData parse
         var rawCurrently = rawData.currently;
 
         var currently_Humidity = document.getElementById("humidity");
@@ -134,7 +124,7 @@ window.addEventListener("load", function(){
         var precipIntensity = precipInt(currently.precipIntensity);
         currently_precipIntensity.innerHTML = precipIntensity;
 
-    //*****daily section ***** completes daily data *****
+    //*****daily section ***** 
         var daily_Summary = document.getElementById("daily_Summary");
         daily_Summary.innerHTML = "Today: " + rawData.daily.summary;
 
@@ -182,7 +172,7 @@ window.addEventListener("load", function(){
         var today_sunset= document.getElementById("today_sunset");
         today_sunset.innerHTML = todaySunset_time;
 
-    //*****hourly section ***** completes hourly data *****
+    //*****hourly section ***** 
         var hourlyData = rawData.hourly.data;
 
         var hourlyTimes = [];
@@ -204,8 +194,6 @@ window.addEventListener("load", function(){
         }
         var now_Temp = document.getElementById("now_temp");
         now_Temp.innerHTML = Math.round(currently.temperature) + "&deg;";
-      
-        debugger;
 
       });
       
