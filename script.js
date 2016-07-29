@@ -92,7 +92,7 @@ window.addEventListener("load", function(){
 
     //*****currently section ***** completes currently data *****
       // completes currently data not involving floats or manipulation
-        var currently = cleansedData.currently;
+        var currently = rawData.currently;
 
         var currently_today = document.getElementById("today");  
         var todayNumber = currently.time;
@@ -103,10 +103,10 @@ window.addEventListener("load", function(){
         currently_Summary.innerHTML = currently.summary;
 
         var currently_Temperature = document.getElementById("temperature");
-        currently_Temperature.innerHTML = currently.temperature + "&deg;";
+        currently_Temperature.innerHTML = Math.round(currently.temperature) + "&deg;";
 
         var currently_apparentTemperature = document.getElementById("apparentTemperature");
-        currently_apparentTemperature.innerHTML = currently.apparentTemperature;
+        currently_apparentTemperature.innerHTML = Math.round(currently.apparentTemperature);
 
         var currently_precipProbability = document.getElementById("precipProbability");
         currently_precipProbability.innerHTML = currently.precipProbability;
@@ -118,27 +118,27 @@ window.addEventListener("load", function(){
         var rawCurrently = rawData.currently;
 
         var currently_Humidity = document.getElementById("humidity");
-        currently_Humidity.innerHTML = (rawCurrently.humidity * 100);
+        currently_Humidity.innerHTML = (currently.humidity * 100);
 
         var currently_visibility = document.getElementById("visibility");
-        currently_visibility.innerHTML = rawCurrently.visibility;
+        currently_visibility.innerHTML = currently.visibility;
 
         var currently_windBearing = document.getElementById("windBearing");
-        currently_windBearing.innerHTML = currentWindDirection(rawCurrently.windBearing);
+        currently_windBearing.innerHTML = currentWindDirection(currently.windBearing);
 
         var currently_pressure = document.getElementById("pressure");
-        var currentPressure = (29.92 * rawCurrently.pressure) / 1013.25; //this variable is the pressure with mb converted to in.
+        var currentPressure = (29.92 * currently.pressure) / 1013.25; //this variable is the pressure with mb converted to in.
         currently_pressure.innerHTML = Math.round(currentPressure);
 
         var currently_precipIntensity = document.getElementById("precipIntensity"); 
-        var precipIntensity = precipInt(rawCurrently.precipIntensity);
+        var precipIntensity = precipInt(currently.precipIntensity);
         currently_precipIntensity.innerHTML = precipIntensity;
 
     //*****daily section ***** completes daily data *****
         var daily_Summary = document.getElementById("daily_Summary");
-        daily_Summary.innerHTML = "Today: " + cleansedData.daily.summary;
+        daily_Summary.innerHTML = "Today: " + rawData.daily.summary;
 
-        var dailyData = cleansedData.daily.data; 
+        var dailyData = rawData.daily.data; 
 
         var dailyDays = [];
         var dailyHighs = [];
@@ -146,8 +146,8 @@ window.addEventListener("load", function(){
 
         for (var i = 0; i < dailyData.length; i++) {
           dailyDays.push(determineDay(dailyData[i].time));
-          dailyHighs.push(dailyData[i].temperatureMax);
-          dailyLows.push(dailyData[i].temperatureMin);
+          dailyHighs.push(Math.round(dailyData[i].temperatureMax));
+          dailyLows.push(Math.round(dailyData[i].temperatureMin));
         }
 
         var daily_Days = document.getElementsByClassName("daily__day");
@@ -183,7 +183,7 @@ window.addEventListener("load", function(){
         today_sunset.innerHTML = todaySunset_time;
 
     //*****hourly section ***** completes hourly data *****
-        var hourlyData = cleansedData.hourly.data;
+        var hourlyData = rawData.hourly.data;
 
         var hourlyTimes = [];
         var hourlyTemps = [];
@@ -191,7 +191,7 @@ window.addEventListener("load", function(){
         for (var i = 1; i < 24; i++) {
           // set i to 1 to avoid getting current hour data, only want first 23 entries
           hourlyTimes.push(determineHour(hourlyData[i].time));
-          hourlyTemps.push(hourlyData[i].temperature);
+          hourlyTemps.push(Math.round(hourlyData[i].temperature));
         }
 
         var hourly_Times = document.getElementsByClassName("hourly__Time");
@@ -203,7 +203,7 @@ window.addEventListener("load", function(){
           hourly_Temps[i].innerHTML = hourlyTemps[i] + "&deg;";
         }
         var now_Temp = document.getElementById("now_temp");
-        now_Temp.innerHTML = currently.temperature + "&deg;";
+        now_Temp.innerHTML = Math.round(currently.temperature) + "&deg;";
       
         debugger;
 
