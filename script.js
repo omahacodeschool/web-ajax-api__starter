@@ -69,6 +69,27 @@ window.addEventListener("load", function(){
         return dayName;
       } 
 
+      function precipInt(num) {
+        var precipIntensity = "--";
+        var x = num.toFixed(1);
+        if (x != 0.0) {
+          precipIntensity = x + " in"; 
+        }
+        return precipIntensity;
+      }
+      
+      function currentWindDirection(x) {
+        if ((x >= 337.6 && x < 360) || (x >= 0 && x <= 22.5)) {"E";}
+        else if (x >= 22.6 && x <= 67.5) {return "NE";}
+        else if (x >= 67.6 && x <= 112.5) {return "N";}
+        else if (x >= 112.6 && x <= 157.5) {return "NW";}
+        else if (x >= 157.6 && x <= 202.5) {return "W";}
+        else if (x >= 202.6 && x <= 247.5) {return "SW";}
+        else if (x >= 247.6 && x <= 292.5) {return "S";}
+        else if (x >= 292.6 && x <= 337.5) {return "SE";}
+        else {return "--";}
+      };
+
     //*****currently section ***** completes currently data *****
       // completes currently data not involving floats or manipulation
         var currently = cleansedData.currently;
@@ -82,13 +103,10 @@ window.addEventListener("load", function(){
         currently_Summary.innerHTML = currently.summary;
 
         var currently_Temperature = document.getElementById("temperature");
-        currently_Temperature.innerHTML = currently.temperature;
+        currently_Temperature.innerHTML = currently.temperature + "&deg;";
 
         var currently_apparentTemperature = document.getElementById("apparentTemperature");
         currently_apparentTemperature.innerHTML = currently.apparentTemperature;
-
-        var currently_Humidity = document.getElementById("humidity");
-        currently_Humidity.innerHTML = currently.humidity;
 
         var currently_precipProbability = document.getElementById("precipProbability");
         currently_precipProbability.innerHTML = currently.precipProbability;
@@ -97,16 +115,24 @@ window.addEventListener("load", function(){
         currently_windSpeed.innerHTML = currently.windSpeed;
 
       //need manipulation; use data from rawData parse
+        var rawCurrently = rawData.currently;
+
+        var currently_Humidity = document.getElementById("humidity");
+        currently_Humidity.innerHTML = (rawCurrently.humidity * 100);
+
         var currently_visibility = document.getElementById("visibility");
+        currently_visibility.innerHTML = rawCurrently.visibility;
 
         var currently_windBearing = document.getElementById("windBearing");
-        // needs a formula
+        currently_windBearing.innerHTML = currentWindDirection(rawCurrently.windBearing);
 
         var currently_pressure = document.getElementById("pressure");
-        // needs a formula
+        var currentPressure = (29.92 * rawCurrently.pressure) / 1013.25; //this variable is the pressure with mb converted to in.
+        currently_pressure.innerHTML = Math.round(currentPressure);
 
         var currently_precipIntensity = document.getElementById("precipIntensity"); 
-        // needs a formula
+        var precipIntensity = precipInt(rawCurrently.precipIntensity);
+        currently_precipIntensity.innerHTML = precipIntensity;
 
     //*****daily section ***** completes daily data *****
         var daily_Summary = document.getElementById("daily_Summary");
@@ -176,8 +202,9 @@ window.addEventListener("load", function(){
         for (var i = 0; i < hourly_Temps.length; i++) {
           hourly_Temps[i].innerHTML = hourlyTemps[i] + "&deg;";
         }
-
-        // still need to do now
+        var now_Temp = document.getElementById("now_temp");
+        now_Temp.innerHTML = currently.temperature + "&deg;";
+      
         debugger;
 
       });
