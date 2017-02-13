@@ -10,6 +10,8 @@ So the page will load, there might be a moment's wait while **/api** is accessed
 
 Alter the HTML as needed to make it easier for you to select elements in the DOM.
 
+**Note:** You will need to be running a local server for the AJAX call to work. You could put together a quick Sinatra application, but I suggest just running `php -S localhost:8080` from your project's root folder. That'll enable you to visit <http://localhost:8080> and <http://localhost:8080/api>, which is enough for this assignment.
+
 ## Learning Outcomes
 
 - Practice using AJAX to receive complex JSON responses
